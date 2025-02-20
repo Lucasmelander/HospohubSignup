@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/edge-config';
 
 const authenticateToken = (req) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -22,11 +22,13 @@ export default async function handler(req, res) {
   try {
     authenticateToken(req);
     
-    // Get all data from KV storage
+    const edgeConfig = createClient(process.env.EDGE_CONFIG);
+    
+    // Get all data from Edge Config
     const [workerSignups, businessSignups, contactSubmissions] = await Promise.all([
-      kv.lrange('workerSignups', 0, -1) || [],
-      kv.lrange('businessSignups', 0, -1) || [],
-      kv.lrange('contactSubmissions', 0, -1) || []
+      edgeConfig.get('workerSignups') || [],
+      edgeConfig.get('businessSignups') || [],
+      edgeConfig.get('contactSubmissions') || []
     ]);
 
     return res.status(200).json({

@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/edge-config';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,8 +19,16 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString()
     };
 
-    // Store in Vercel KV
-    await kv.rpush('contactSubmissions', JSON.stringify(submission));
+    const edgeConfig = createClient(process.env.EDGE_CONFIG);
+    
+    // Get existing submissions
+    const existingSubmissions = await edgeConfig.get('contactSubmissions') || [];
+    
+    // Add new submission
+    const updatedSubmissions = [...existingSubmissions, submission];
+    
+    // Update Edge Config
+    await edgeConfig.set('contactSubmissions', updatedSubmissions);
     
     return res.status(201).json({ 
       message: 'Form submitted successfully', 
