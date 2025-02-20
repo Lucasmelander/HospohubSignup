@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiChevronDown, FiCheck, FiArrowRight, FiGithub, FiTwitter, FiLinkedin, 
-  FiMenu, FiX, FiClock, FiDollarSign, FiStar, 
+  FiMenu, FiX, FiClock, FiDollarSign, 
   FiShield, FiTrendingUp, FiAward, FiMessageCircle,
-  FiSmile, FiHeart, FiBookOpen, FiTarget, FiZap
+  FiSmile, FiHeart, FiBookOpen, FiTarget
 } from 'react-icons/fi';
 import SignupModal from '../components/SignupModal';
 
@@ -145,7 +145,7 @@ const HeroSection = styled.section`
   align-items: center;
   justify-content: center;
   padding: 6rem 2rem 2rem;
-  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.05) 100%);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -156,8 +156,9 @@ const AnimatedCircle = styled(motion.div)`
   width: 40vw;
   height: 40vw;
   border-radius: 50%;
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.05) 100%);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: transparent;
+  border: 1px solid #000;
+  opacity: 0.1;
   pointer-events: none;
 `;
 
@@ -254,7 +255,17 @@ const WaveDivider = styled.div`
     right: 0;
     bottom: 0;
     height: 100px;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z' fill='${props => encodeURIComponent(props.fill || '#ffffff')}'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z' fill='${props => {
+      // Convert the fill color to a URL-encoded version
+      const fillColor = props.variant === 'blue' 
+        ? 'rgba(0, 168, 204, 0.1)' 
+        : props.variant === 'teal' 
+        ? 'rgba(0, 206, 209, 0.1)'
+        : props.variant === 'navy'
+        ? 'rgba(0, 24, 48, 0.1)'
+        : props.fill || 'rgba(0, 168, 204, 0.05)';
+      return encodeURIComponent(fillColor);
+    }}'/%3E%3C/svg%3E");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -638,61 +649,27 @@ const SectionTransition = styled(motion.div)`
   }
 `;
 
-const FloatingShape = styled(motion.div)`
+const FloatingObject = styled(motion.div)`
   position: absolute;
-  width: 300px;
-  height: 300px;
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.05));
+  width: ${props => props.size || '100px'};
+  height: ${props => props.size || '100px'};
+  background: ${props => {
+    if (props.variant === 'blue') return 'linear-gradient(135deg, rgba(0, 168, 204, 0.15), rgba(0, 24, 48, 0.25))';
+    if (props.variant === 'teal') return 'linear-gradient(135deg, rgba(0, 206, 209, 0.15), rgba(0, 128, 128, 0.25))';
+    if (props.variant === 'navy') return 'linear-gradient(135deg, rgba(0, 24, 48, 0.15), rgba(0, 48, 72, 0.25))';
+    return 'linear-gradient(135deg, rgba(0, 168, 204, 0.1), rgba(0, 24, 48, 0.2))';
+  }};
+  border: 1px solid ${props => {
+    if (props.variant === 'blue') return 'rgba(0, 168, 204, 0.2)';
+    if (props.variant === 'teal') return 'rgba(0, 206, 209, 0.2)';
+    if (props.variant === 'navy') return 'rgba(0, 24, 48, 0.2)';
+    return 'rgba(0, 168, 204, 0.15)';
+  }};
+  border-radius: ${props => props.shape === 'circle' ? '50%' : props.shape === 'blob' ? '30% 70% 70% 30% / 30% 30% 70% 70%' : '10px'};
   pointer-events: none;
-  z-index: 0;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-`;
-
-const ScrollIndicator = styled(motion.div)`
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 0.9rem;
-  cursor: pointer;
-
-  .scroll-icon {
-    width: 24px;
-    height: 24px;
-    border: 2px solid currentColor;
-    border-radius: 12px;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 4px;
-      background: currentColor;
-      border-radius: 50%;
-      animation: scrollDown 1.5s infinite;
-    }
-  }
-
-  @keyframes scrollDown {
-    0% {
-      transform: translate(-50%, 0);
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, 8px);
-      opacity: 0;
-    }
-  }
+  z-index: 1;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 24, 48, 0.1);
 `;
 
 const LandingPage = () => {
@@ -748,14 +725,6 @@ const LandingPage = () => {
     }
   ];
 
-  // Add a function to scroll smoothly to the next section
-  const scrollToNextSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <PageContainer>
       <Navbar
@@ -780,13 +749,13 @@ const LandingPage = () => {
       <HeroSection>
         <AnimatedCircle
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          animate={{ scale: 1, opacity: 0.1 }}
           transition={{ duration: 1 }}
           style={{ top: '10%', left: '10%' }}
         />
         <AnimatedCircle
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          animate={{ scale: 1, opacity: 0.1 }}
           transition={{ duration: 1, delay: 0.2 }}
           style={{ bottom: '10%', right: '10%' }}
         />
@@ -934,15 +903,6 @@ const LandingPage = () => {
             </InsightCard>
           </InfoGrid>
         </HeroContent>
-        <ScrollIndicator
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-          onClick={() => scrollToNextSection('launch-benefits')}
-        >
-          <div className="scroll-icon" />
-          <span>Scroll to explore</span>
-        </ScrollIndicator>
       </HeroSection>
 
       <SectionTransition
@@ -962,15 +922,28 @@ const LandingPage = () => {
         </motion.div>
       </SectionTransition>
 
-      <FloatingShape
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+      <FloatingObject
+        as={motion.div}
+        size="80px"
+        shape="circle"
+        variant="teal"
+        initial={{ x: -100, y: 50, opacity: 0 }}
+        whileInView={{ x: 0, y: 0, opacity: 1 }}
         viewport={{ once: true }}
-        style={{
-          top: '10%',
-          right: '5%',
-          transform: 'rotate(45deg)'
-        }}
+        transition={{ duration: 1, type: "spring" }}
+        style={{ left: '20%' }}
+      />
+
+      <FloatingObject
+        as={motion.div}
+        size="120px"
+        shape="blob"
+        variant="blue"
+        initial={{ x: 100, y: -50, opacity: 0 }}
+        whileInView={{ x: 0, y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, type: "spring" }}
+        style={{ right: '20%' }}
       />
 
       <SectionWrapper id="launch-benefits" background="#fff">
@@ -980,7 +953,7 @@ const LandingPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <FiTarget /> Launch Benefits
+            <FiTarget /> Platform Features
           </SectionTitle>
           <InfoGrid>
             <GlassCard
@@ -989,14 +962,14 @@ const LandingPage = () => {
               viewport={{ once: true }}
             >
               <IconWrapper>
-                <FiStar />
+                <FiShield />
               </IconWrapper>
-              <h3>Early Access Perks</h3>
+              <h3>Advanced Security</h3>
               <ul>
-                <li><FiCheck /> Priority matching</li>
-                <li><FiCheck /> Reduced platform fees</li>
-                <li><FiCheck /> Premium features free</li>
-                <li><FiCheck /> Exclusive events access</li>
+                <li><FiCheck /> Identity verification</li>
+                <li><FiCheck /> Secure payment processing</li>
+                <li><FiCheck /> Data encryption</li>
+                <li><FiCheck /> Privacy protection</li>
               </ul>
             </GlassCard>
 
@@ -1007,14 +980,14 @@ const LandingPage = () => {
               transition={{ delay: 0.2 }}
             >
               <IconWrapper>
-                <FiAward />
+                <FiClock />
               </IconWrapper>
-              <h3>Founding Member Status</h3>
+              <h3>Real-Time Matching</h3>
               <ul>
-                <li><FiCheck /> Verified badge</li>
-                <li><FiCheck /> Featured profiles</li>
-                <li><FiCheck /> Direct support line</li>
-                <li><FiCheck /> Community influence</li>
+                <li><FiCheck /> Instant notifications</li>
+                <li><FiCheck /> Live availability updates</li>
+                <li><FiCheck /> Smart scheduling</li>
+                <li><FiCheck /> Quick response system</li>
               </ul>
             </GlassCard>
 
@@ -1025,14 +998,14 @@ const LandingPage = () => {
               transition={{ delay: 0.4 }}
             >
               <IconWrapper>
-                <FiZap />
+                <FiMessageCircle />
               </IconWrapper>
-              <h3>Limited Time Offer</h3>
+              <h3>Communication Tools</h3>
               <ul>
-                <li><FiCheck /> 50% off first month</li>
-                <li><FiCheck /> Free trial extension</li>
-                <li><FiCheck /> Referral rewards</li>
-                <li><FiCheck /> Launch party invite</li>
+                <li><FiCheck /> In-app messaging</li>
+                <li><FiCheck /> Document sharing</li>
+                <li><FiCheck /> Team collaboration</li>
+                <li><FiCheck /> Feedback system</li>
               </ul>
             </GlassCard>
           </InfoGrid>
@@ -1130,6 +1103,7 @@ const LandingPage = () => {
         </InfoSection>
         <WaveDivider 
           background="rgba(0,0,0,0.02)" 
+          variant="blue"
           fill="#fff"
           as={motion.div}
           initial={{ opacity: 0 }}
@@ -1230,6 +1204,7 @@ const LandingPage = () => {
         </InfoSection>
         <WaveDivider 
           background="#fff" 
+          variant="blue"
           fill="rgba(0,0,0,0.02)"
           as={motion.div}
           initial={{ opacity: 0 }}
@@ -1329,6 +1304,7 @@ const LandingPage = () => {
         </InfoSection>
         <WaveDivider 
           background="rgba(0,0,0,0.02)" 
+          variant="blue"
           fill="#fff"
           as={motion.div}
           initial={{ opacity: 0 }}
@@ -1428,6 +1404,7 @@ const LandingPage = () => {
         </InfoSection>
         <WaveDivider 
           background="#fff" 
+          variant="blue"
           fill="#f8f8f8"
           as={motion.div}
           initial={{ opacity: 0 }}
@@ -1499,6 +1476,7 @@ const LandingPage = () => {
         </InfoSection>
         <WaveDivider 
           background="#fff" 
+          variant="blue"
           fill="rgba(0,0,0,0.02)"
           as={motion.div}
           initial={{ opacity: 0 }}
