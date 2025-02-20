@@ -5,6 +5,7 @@ import {
   FiX, FiUser, FiMail, FiPhone, FiBriefcase, 
   FiMessageSquare, FiClock, FiTag, FiCheckCircle 
 } from 'react-icons/fi';
+import { API_URL } from '../config/api';
 
 const ContactDetailsModal = ({ isOpen, onClose, submission, onUpdateStatus }) => {
   if (!isOpen || !submission) return null;
@@ -21,23 +22,23 @@ const ContactDetailsModal = ({ isOpen, onClose, submission, onUpdateStatus }) =>
     completed: 'Completed'
   };
 
-  const handleStatusChange = async (newStatus) => {
+  const updateStatus = async (status) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:3000/api/admin/contact/${submission.id}/status`, {
+      const response = await fetch(`${API_URL}/admin/contact/${submission.id}/status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ status })
       });
 
       if (!response.ok) {
         throw new Error('Failed to update status');
       }
 
-      onUpdateStatus(submission.id, newStatus);
+      onUpdateStatus(submission.id, status);
     } catch (error) {
       console.error('Error updating status:', error);
       alert('Failed to update status');
@@ -78,7 +79,7 @@ const ContactDetailsModal = ({ isOpen, onClose, submission, onUpdateStatus }) =>
                   key={status}
                   $isActive={submission.status === status}
                   $color={statusColors[status]}
-                  onClick={() => handleStatusChange(status)}
+                  onClick={() => updateStatus(status)}
                 >
                   <FiCheckCircle />
                   {label}

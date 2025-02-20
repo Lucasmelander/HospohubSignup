@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FiSend, FiClock, FiMapPin, FiMail, FiMessageSquare } from 'react-icons/fi';
 import Layout from '../components/Layout';
+import { API_URL } from '../config/api';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ const ContactPage = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,16 +30,16 @@ const ContactPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
+
     try {
-      const response = await fetch('http://localhost:3000/api/contact/submit', {
+      const response = await fetch(`${API_URL}/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          timestamp: new Date().toISOString()
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -53,13 +56,11 @@ const ContactPage = () => {
         message: '',
         type: 'general'
       });
-
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 3000);
-    } catch (error) {
-      console.error('Contact form submission error:', error);
-      alert('Failed to submit form. Please try again.');
+    } catch (err) {
+      setError('Failed to submit form. Please try again.');
+      console.error('Contact form submission error:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

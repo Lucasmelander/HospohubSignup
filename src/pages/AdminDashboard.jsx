@@ -5,8 +5,7 @@ import { motion } from 'framer-motion';
 import { FiUsers, FiBriefcase, FiLogOut, FiChevronRight, FiMessageSquare } from 'react-icons/fi';
 import SignupDetailsModal from '../components/SignupDetailsModal';
 import ContactDetailsModal from '../components/ContactDetailsModal';
-
-const API_URL = 'http://localhost:3000/api';
+import { API_URL } from '../config/api';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -213,7 +212,7 @@ const AdminDashboard = () => {
     contactSubmissions: []
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [selectedSignup, setSelectedSignup] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
   const [modalType, setModalType] = useState(null);
@@ -222,11 +221,6 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      if (!token) {
-        navigate('/admin/login');
-        return;
-      }
-
       const response = await fetch(`${API_URL}/admin/dashboard`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -234,20 +228,19 @@ const AdminDashboard = () => {
       });
 
       if (!response.ok) {
-        if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem('adminToken');
-          navigate('/admin/login');
-          return;
-        }
         throw new Error('Failed to fetch dashboard data');
       }
 
       const data = await response.json();
       setStats(data);
-      setError(null);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      setError('');
+    } catch (err) {
+      console.error('Dashboard data fetch error:', err);
       setError('Failed to load dashboard data');
+      if (err.message === 'Invalid or expired token') {
+        localStorage.removeItem('adminToken');
+        navigate('/admin/login');
+      }
     } finally {
       setIsLoading(false);
     }

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiCheck, FiUser, FiMail, FiPhone, FiBriefcase, FiMapPin } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config/api';
 
 const SignupModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -58,7 +59,7 @@ const SignupModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/waitlist/signup', {
+      const response = await fetch(`${API_URL}/waitlist/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
