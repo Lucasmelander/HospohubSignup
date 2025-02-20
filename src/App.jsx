@@ -1,25 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import LandingPage from './LandingPage';
+import { BrowserRouter as Router } from 'react-router-dom';
+import styled from 'styled-components';
+import { GlobalStyle } from './styles/GlobalStyle';
+import LandingPage from './pages/LandingPage';
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#333',
-            color: '#fff',
-          },
-        }} 
-      />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-      </Routes>
+      <GlobalStyle />
+      <AppContainer>
+        <LandingPage />
+      </AppContainer>
     </Router>
   );
-}
+};
 
 export default App;
+
+const AppContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
