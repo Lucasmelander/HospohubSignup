@@ -597,6 +597,104 @@ const InsightCard = styled(motion.div)`
   }
 `;
 
+// Add new styled components for transitions
+const SectionTransition = styled(motion.div)`
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.background || '#fff'};
+
+  .line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      transparent 100%
+    );
+  }
+
+  .icon-container {
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    
+    svg {
+      font-size: 1.5rem;
+      color: #000;
+    }
+  }
+`;
+
+const FloatingShape = styled(motion.div)`
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.05));
+  pointer-events: none;
+  z-index: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+const ScrollIndicator = styled(motion.div)`
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  .scroll-icon {
+    width: 24px;
+    height: 24px;
+    border: 2px solid currentColor;
+    border-radius: 12px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: currentColor;
+      border-radius: 50%;
+      animation: scrollDown 1.5s infinite;
+    }
+  }
+
+  @keyframes scrollDown {
+    0% {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, 8px);
+      opacity: 0;
+    }
+  }
+`;
+
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeAccordion, setActiveAccordion] = useState(null);
@@ -649,6 +747,14 @@ const LandingPage = () => {
       answer: "All payments are processed securely through the app. Funds are held in escrow and automatically released to staff after gig completion and your approval. You can set your payment rates and view all transactions in real-time."
     }
   ];
+
+  // Add a function to scroll smoothly to the next section
+  const scrollToNextSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <PageContainer>
@@ -828,9 +934,46 @@ const LandingPage = () => {
             </InsightCard>
           </InfoGrid>
         </HeroContent>
+        <ScrollIndicator
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          onClick={() => scrollToNextSection('launch-benefits')}
+        >
+          <div className="scroll-icon" />
+          <span>Scroll to explore</span>
+        </ScrollIndicator>
       </HeroSection>
 
-      <SectionWrapper background="#fff">
+      <SectionTransition
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <div className="line" />
+        <motion.div 
+          className="icon-container"
+          initial={{ scale: 0, rotate: -180 }}
+          whileInView={{ scale: 1, rotate: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
+          <FiArrowRight />
+        </motion.div>
+      </SectionTransition>
+
+      <FloatingShape
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        style={{
+          top: '10%',
+          right: '5%',
+          transform: 'rotate(45deg)'
+        }}
+      />
+
+      <SectionWrapper id="launch-benefits" background="#fff">
         <InfoSection>
           <SectionTitle
             initial={{ opacity: 0, y: 20 }}
@@ -896,7 +1039,7 @@ const LandingPage = () => {
         </InfoSection>
       </SectionWrapper>
 
-      <SectionWrapper background="rgba(0,0,0,0.02)">
+      <SectionWrapper id="business-benefits" background="rgba(0,0,0,0.02)">
         <InfoSection background="rgba(0,0,0,0.02)">
           <SectionTitle
             initial={{ opacity: 0, y: 20 }}
@@ -995,7 +1138,7 @@ const LandingPage = () => {
         />
       </SectionWrapper>
 
-      <SectionWrapper background="#fff">
+      <SectionWrapper id="how-it-works" background="#fff">
         <GradientOverlay />
         <InfoSection>
           <SectionTitle
