@@ -6,19 +6,14 @@ import { get, set } from '@vercel/edge-config';
 const app = express();
 
 // CORS configuration
-const corsOptions = {
+app.use(cors({
   origin: '*',
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  maxAge: 86400 // 24 hours
+}));
 
-// Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
-
-// Options pre-flight
-app.options('*', cors(corsOptions));
 
 // Auth middleware
 const authenticateToken = async (req, res, next) => {
@@ -37,34 +32,26 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-// Login route
-app.post('/admin/login', async (req, res) => {
+// Admin login route
+app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log('Login attempt:', { username }); // Log without password
-    
     const adminCredentials = await get('adminCredentials');
-    console.log('Admin credentials found:', !!adminCredentials);
     
     if (!adminCredentials) {
       console.error('Admin credentials not found in Edge Config');
       return res.status(500).json({ message: 'Server configuration error' });
     }
 
-    const { username: validUsername, password: validPassword } = adminCredentials;
-
-    if (username === validUsername && password === validPassword) {
+    if (username === adminCredentials.username && password === adminCredentials.password) {
       const token = jwt.sign(
         { username, role: 'admin' },
         process.env.JWT_SECRET,
         { expiresIn: '8h' }
       );
-
-      console.log('Login successful:', { username });
       return res.status(200).json({ token });
     }
 
-    console.log('Login failed: Invalid credentials');
     return res.status(401).json({ message: 'Invalid credentials' });
   } catch (error) {
     console.error('Login error:', error);
@@ -72,8 +59,8 @@ app.post('/admin/login', async (req, res) => {
   }
 });
 
-// Dashboard route
-app.get('/admin/dashboard', authenticateToken, async (req, res) => {
+// Dashboard data route
+app.get('/api/admin/dashboard', authenticateToken, async (req, res) => {
   try {
     const [workerSignups, businessSignups, contactSubmissions] = await Promise.all([
       get('workerSignups') || [],
@@ -93,7 +80,7 @@ app.get('/admin/dashboard', authenticateToken, async (req, res) => {
 });
 
 // Waitlist signup route
-app.post('/waitlist/signup', async (req, res) => {
+app.post('/api/waitlist/signup', async (req, res) => {
   try {
     const { type, data } = req.body;
     
@@ -123,8 +110,8 @@ app.post('/waitlist/signup', async (req, res) => {
   }
 });
 
-// Contact form route
-app.post('/contact/submit', async (req, res) => {
+// Contact form submission route
+app.post('/api/contact/submit', async (req, res) => {
   try {
     const formData = req.body;
     
@@ -155,7 +142,7 @@ app.post('/contact/submit', async (req, res) => {
 });
 
 // Update contact status route
-app.post('/admin/contact/:id/status', authenticateToken, async (req, res) => {
+app.put('/api/admin/contact/:id/status', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
