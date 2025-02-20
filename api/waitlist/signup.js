@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/edge-config';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,14 +18,17 @@ export default async function handler(req, res) {
       id: Date.now().toString()
     };
 
-    // Store in Vercel KV based on type
-    if (type === 'worker') {
-      await kv.rpush('workerSignups', JSON.stringify(signup));
-    } else if (type === 'business') {
-      await kv.rpush('businessSignups', JSON.stringify(signup));
-    } else {
-      return res.status(400).json({ message: 'Invalid signup type' });
-    }
+    const edgeConfig = createClient(process.env.EDGE_CONFIG);
+    
+    // Get existing signups
+    const key = type === 'worker' ? 'workerSignups' : 'businessSignups';
+    const existingSignups = await edgeConfig.get(key) || [];
+    
+    // Add new signup
+    const updatedSignups = [...existingSignups, signup];
+    
+    // Update Edge Config
+    await edgeConfig.set(key, updatedSignups);
 
     return res.status(201).json({ 
       message: 'Signup successful', 
