@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FiLock } from 'react-icons/fi';
 import Layout from '../components/Layout';
+import { API_URL } from '../config/api';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -84,8 +85,6 @@ const ErrorMessage = styled.div`
   text-align: center;
   font-size: 0.9rem;
 `;
-
-const API_URL = 'http://localhost:3000/api';
 
 const AdminLoginPage = () => {
   const [username, setUsername] = useState('');
