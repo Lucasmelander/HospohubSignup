@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { get } from '@vercel/edge-config';
 
 export default async function handler(req, res) {
   // Log request method and headers
@@ -14,18 +15,15 @@ export default async function handler(req, res) {
   try {
     const { username, password } = req.body;
     
-    // Log credentials being used (without the actual password)
-    console.log('Login attempt:', {
-      providedUsername: username,
-      expectedUsername: process.env.ADMIN_USERNAME,
-      hasPassword: !!password,
-      hasValidPassword: !!process.env.ADMIN_PASSWORD,
-      hasJwtSecret: !!process.env.JWT_SECRET
-    });
+    // Get admin credentials from Edge Config
+    const adminCredentials = await get('adminCredentials');
+    
+    if (!adminCredentials) {
+      console.error('Admin credentials not found in Edge Config');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
 
-    // Using environment variables
-    const validUsername = process.env.ADMIN_USERNAME;
-    const validPassword = process.env.ADMIN_PASSWORD;
+    const { username: validUsername, password: validPassword } = adminCredentials;
 
     if (username === validUsername && password === validPassword) {
       const token = jwt.sign(
