@@ -115,6 +115,16 @@ const Title = styled(motion.h1)`
   color: #000;
 `;
 
+const Subtitle = styled(motion.div)`
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+`;
+
 const Description = styled(motion.p)`
   font-size: clamp(1.1rem, 2vw, 1.3rem);
   margin-bottom: 2rem;
@@ -318,20 +328,28 @@ const LandingPage = () => {
 
   const faqs = [
     {
+      question: "When is the app launching?",
+      answer: "We're launching soon! Join our waitlist to be among the first to access the app and receive exclusive early-bird benefits."
+    },
+    {
+      question: "How does the gig booking process work?",
+      answer: "As a hospitality business, you can post short-term gigs through the app, specifying your requirements and timing. Available staff can instantly accept these gigs, and you can review their profiles and ratings before confirmation."
+    },
+    {
+      question: "What types of gigs can I post?",
+      answer: "You can post various hospitality roles including servers, bartenders, kitchen staff, and event staff. Gigs can range from a few hours to several days, perfect for events, peak seasons, or last-minute coverage."
+    },
+    {
       question: "How does the staff verification process work?",
-      answer: "We conduct thorough background checks, verify work history, and validate qualifications for all staff members. Each professional goes through a multi-step verification process."
+      answer: "We conduct thorough background checks, verify work history, and validate qualifications for all staff members. Each professional goes through a multi-step verification process before being able to accept gigs."
     },
     {
       question: "What happens if a staff member doesn't show up?",
-      answer: "We have a robust reliability system in place. In the rare event of a no-show, we provide immediate replacement options and offer booking credits as compensation."
+      answer: "Our app includes a reliable backup system. In the rare event of a no-show, you'll receive instant notifications and we'll immediately connect you with available backup staff in your area."
     },
     {
       question: "How are payments handled?",
-      answer: "Payments are processed automatically through our secure platform. Funds are held in escrow and released to staff after shift completion and your approval."
-    },
-    {
-      question: "Can I set specific requirements for staff?",
-      answer: "Yes, you can set detailed requirements including experience level, certifications, language skills, and specific role requirements."
+      answer: "All payments are processed securely through the app. Funds are held in escrow and automatically released to staff after gig completion and your approval. You can set your payment rates and view all transactions in real-time."
     }
   ];
 
@@ -347,7 +365,7 @@ const LandingPage = () => {
           <NavLinks className={isMenuOpen ? 'active' : ''}>
             <NavLink href="#features">Features</NavLink>
             <NavLink href="#faq">FAQ</NavLink>
-            <NavLink href="#" onClick={() => setIsModalOpen(true)}>Sign Up</NavLink>
+            <NavLink href="#" onClick={() => setIsModalOpen(true)}>Join Waitlist</NavLink>
           </NavLinks>
           <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <FiX /> : <FiMenu />}
@@ -370,19 +388,27 @@ const LandingPage = () => {
         />
         
         <HeroContent>
+          <Subtitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            🚀 Launching Soon
+          </Subtitle>
           <Title
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            The Future of Hospitality Staffing
+            The On-Demand Staffing App for Hospitality
           </Title>
           <Description
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Connect directly with verified hospitality professionals. 
+            Find and book verified hospitality staff for short-term gigs instantly. 
+            Perfect for events, peak seasons, or last-minute coverage. 
             No agencies, no hassle, just reliable staff when you need them.
           </Description>
           <SignUpButton
@@ -400,7 +426,11 @@ const LandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            {['Verified Staff', 'Instant Booking', 'Direct Payments'].map((feature, index) => (
+            {[
+              'Instant Gig Booking',
+              'Verified Staff',
+              'Flexible Hours'
+            ].map((feature, index) => (
               <Feature
                 key={feature}
                 initial={{ opacity: 0, x: -20 }}
@@ -460,7 +490,7 @@ const LandingPage = () => {
         <FooterContent>
           <FooterSection>
             <Logo>HospoHub</Logo>
-            <p>Revolutionizing hospitality staffing with instant connections and verified professionals.</p>
+            <p>The upcoming on-demand staffing app revolutionizing short-term hospitality work. Find staff or gigs instantly, whenever you need them.</p>
             <SocialLinks>
               <SocialLink href="#" target="_blank" rel="noopener noreferrer">
                 <FiGithub />
