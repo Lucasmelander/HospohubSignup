@@ -183,6 +183,63 @@ const Feature = styled(motion.div)`
   }
 `;
 
+const InfoSection = styled.section`
+  padding: 4rem 2rem;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+`;
+
+const InfoGrid = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
+const GlassCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #000;
+  }
+
+  p {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+
+    svg {
+      color: #000;
+    }
+  }
+`;
+
 const FAQSection = styled.section`
   padding: 4rem 2rem;
   background: #f8f8f8;
@@ -393,23 +450,21 @@ const LandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            🚀 Launching Soon
+            🚀 App Launching Soon
           </Subtitle>
           <Title
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            The On-Demand Staffing App for Hospitality
+            Short-Term Hospitality Staff On Demand
           </Title>
           <Description
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Find and book verified hospitality staff for short-term gigs instantly. 
-            Perfect for events, peak seasons, or last-minute coverage. 
-            No agencies, no hassle, just reliable staff when you need them.
+            Book verified hospitality staff for events, peak seasons, or last-minute coverage.
           </Description>
           <SignUpButton
             onClick={() => setIsModalOpen(true)}
@@ -443,6 +498,58 @@ const LandingPage = () => {
           </Features>
         </HeroContent>
       </HeroSection>
+
+      <InfoSection>
+        <InfoGrid>
+          <GlassCard
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h3>For Businesses</h3>
+            <p>Post short-term gigs and find qualified staff instantly. Perfect for:</p>
+            <ul>
+              <li><FiCheck /> Events and functions</li>
+              <li><FiCheck /> Peak season coverage</li>
+              <li><FiCheck /> Last-minute replacements</li>
+              <li><FiCheck /> Temporary staff needs</li>
+            </ul>
+          </GlassCard>
+
+          <GlassCard
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h3>How It Works</h3>
+            <p>Simple, streamlined process for quick staffing:</p>
+            <ul>
+              <li><FiCheck /> Post your requirements</li>
+              <li><FiCheck /> Review verified profiles</li>
+              <li><FiCheck /> Instant booking confirmation</li>
+              <li><FiCheck /> Secure in-app payments</li>
+            </ul>
+          </GlassCard>
+
+          <GlassCard
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <h3>Staff Verification</h3>
+            <p>All staff undergo thorough verification:</p>
+            <ul>
+              <li><FiCheck /> Background checks</li>
+              <li><FiCheck /> Experience verification</li>
+              <li><FiCheck /> Skills assessment</li>
+              <li><FiCheck /> Reference checks</li>
+            </ul>
+          </GlassCard>
+        </InfoGrid>
+      </InfoSection>
 
       <FAQSection id="faq">
         <FAQContainer>
