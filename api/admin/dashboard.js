@@ -1,50 +1,32 @@
-import jwt from 'jsonwebtoken';
 import { get } from '@vercel/edge-config';
-
-const authenticateToken = (req) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-    throw new Error('Authentication required');
-  }
-
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET);
-  } catch (error) {
-    console.error('Token verification error:', error);
-    throw new Error('Invalid or expired token');
-  }
-};
+import { verifyToken } from '../middleware/auth';
 
 export default async function handler(req, res) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle preflight request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Only allow GET requests
   if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Log the incoming request
-    console.log('Dashboard request:', {
-      method: req.method,
-      headers: req.headers,
-      auth: req.headers.authorization ? 'Present' : 'Missing'
-    });
+    // Verify token
+    verifyToken(req);
 
-    // Verify authentication
-    const decoded = authenticateToken(req);
-    console.log('Authenticated user:', decoded);
-    
-    // Get all data from Edge Config
+    // Get data from Edge Config
     const [workerSignups, businessSignups, contactSubmissions] = await Promise.all([
       get('workerSignups') || [],
       get('businessSignups') || [],
       get('contactSubmissions') || []
     ]);
-
-    // Log the response size
-    console.log('Dashboard response size:', {
-      workers: workerSignups.length,
-      businesses: businessSignups.length,
-      contacts: contactSubmissions.length
-    });
 
     return res.status(200).json({
       workerSignups,
@@ -53,11 +35,9 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('Dashboard error:', error);
-    
-    if (error.message === 'Authentication required' || error.message === 'Invalid or expired token') {
-      return res.status(401).json({ message: error.message });
+    if (error.message === 'No token provided' || error.message === 'Invalid token') {
+      return res.status(401).json({ error: error.message });
     }
-    
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 } 
