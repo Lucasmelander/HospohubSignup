@@ -9,14 +9,13 @@ export const GlobalStyle = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
   }
 
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     line-height: 1.5;
-    color: #fff;
-    background: #000;
+    color: #000;
+    background: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -47,7 +46,7 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
     background: none;
     padding: 0;
-    color: #fff;
+    color: #000;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -60,8 +59,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(0, 0, 0, 0.1);
+    color: #000;
   }
 
   ::-webkit-scrollbar {
@@ -70,16 +69,16 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background: #000;
+    background: #fff;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #333;
+    background: #ddd;
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #444;
+    background: #ccc;
   }
 
   @keyframes fadeIn {
