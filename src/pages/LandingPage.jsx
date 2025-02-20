@@ -1,146 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FiChevronDown, FiCheck, FiArrowRight, FiGithub, FiTwitter, FiLinkedin, 
-  FiMenu, FiX, FiClock, FiDollarSign, 
+  FiCheck, FiClock, FiDollarSign, 
   FiShield, FiTrendingUp, FiAward, FiMessageCircle,
-  FiSmile, FiHeart, FiBookOpen, FiTarget
+  FiSmile, FiHeart, FiBookOpen, FiTarget, FiChevronDown,
+  FiArrowRight
 } from 'react-icons/fi';
-import SignupModal from '../components/SignupModal';
+import Layout from '../components/Layout';
 
 const PageContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   background: #fff;
   color: #000;
-`;
-
-const Navbar = styled(motion.nav)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-
-  &.scrolled {
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const NavContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Logo = styled.div`
-  font-weight: 800;
-  font-size: 1.5rem;
-  background: linear-gradient(135deg, #000000 0%, #333333 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const NavLinks = styled.div`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    display: none;
-    
-    &.active {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.98);
-      padding: 1.5rem;
-      gap: 1.5rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      animation: slideDown 0.3s ease-out forwards;
-    }
-  }
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-const NavLink = styled.a`
-  color: #000;
-  text-decoration: none;
-  font-weight: 600;
-  position: relative;
-  padding: 0.5rem 0;
-  transition: all 0.3s ease;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #000;
-    transition: width 0.3s ease;
-  }
-
-  &:hover {
-    color: #000;
-    
-    &::after {
-      width: 100%;
-    }
-  }
-`;
-
-const MenuButton = styled.button`
-  display: none;
-  font-size: 1.5rem;
-  color: #000;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    &:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-  }
+  scroll-behavior: smooth;
 `;
 
 const HeroSection = styled.section`
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,6 +45,7 @@ const HeroContent = styled.div`
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  padding-top: 60px;
 `;
 
 const Title = styled(motion.h1)`
@@ -444,72 +323,6 @@ const FAQAnswer = styled(motion.div)`
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 `;
 
-const Footer = styled.footer`
-  padding: 4rem 2rem 2rem;
-  background: #fff;
-  border-top: 1px solid #eee;
-`;
-
-const FooterContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 4rem;
-`;
-
-const FooterSection = styled.div`
-  h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: #666;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-`;
-
-const SocialLinks = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-`;
-
-const SocialLink = styled.a`
-  color: #000;
-  font-size: 1.5rem;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-`;
-
-const FooterLinks = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const FooterLink = styled.a`
-  color: #666;
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: #000;
-  }
-`;
-
-const Copyright = styled.div`
-  text-align: center;
-  color: #666;
-  margin-top: 4rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee;
-`;
-
 const StatsSection = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -672,31 +485,119 @@ const FloatingObject = styled(motion.div)`
   box-shadow: 0 8px 32px rgba(0, 24, 48, 0.1);
 `;
 
+const PricingSection = styled.section`
+  padding: 6rem 2rem;
+  background: #fff;
+`;
+
+const PricingContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const PricingCard = styled.div`
+  background: ${props => props.$featured ? '#000' : '#fff'};
+  color: ${props => props.$featured ? '#fff' : '#000'};
+  border: 2px solid #000;
+  border-radius: 24px;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  ${props => props.$featured && `
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  `}
+
+  &:hover {
+    transform: ${props => props.$featured ? 'scale(1.08)' : 'scale(1.03)'};
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .price {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 1.5rem 0;
+    
+    .currency {
+      font-size: 1.5rem;
+      vertical-align: super;
+    }
+    
+    .period {
+      font-size: 1.2rem;
+      color: ${props => props.$featured ? 'rgba(255, 255, 255, 0.8)' : '#666'};
+    }
+  }
+
+  .description {
+    font-size: 1.1rem;
+    color: ${props => props.$featured ? '#fff' : '#666'};
+    margin-bottom: 2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    text-align: left;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: ${props => props.$featured ? '#fff' : '#333'};
+    font-size: 1.1rem;
+
+    svg {
+      color: ${props => props.$featured ? '#fff' : '#000'};
+      flex-shrink: 0;
+    }
+  }
+`;
+
+const PricingButton = styled.button`
+  background: ${props => props.$featured ? '#fff' : '#000'};
+  color: ${props => props.$featured ? '#000' : '#fff'};
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+`;
+
 const LandingPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeAccordion, setActiveAccordion] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleJoinWaitlist = () => {
+    setIsModalOpen(true);
+  };
 
   const faqs = [
     {
@@ -726,848 +627,900 @@ const LandingPage = () => {
   ];
 
   return (
-    <PageContainer>
-      <Navbar
-        className={isScrolled ? 'scrolled' : ''}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <NavContent>
-          <Logo>HospoHub</Logo>
-          <NavLinks className={isMenuOpen ? 'active' : ''}>
-            <NavLink href="#features">Features</NavLink>
-            <NavLink href="#faq">FAQ</NavLink>
-            <NavLink href="#" onClick={() => setIsModalOpen(true)}>Join Waitlist</NavLink>
-          </NavLinks>
-          <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <FiX /> : <FiMenu />}
-          </MenuButton>
-        </NavContent>
-      </Navbar>
-
-      <HeroSection>
-        <AnimatedCircle
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.1 }}
-          transition={{ duration: 1 }}
-          style={{ top: '10%', left: '10%' }}
-        />
-        <AnimatedCircle
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          style={{ bottom: '10%', right: '10%' }}
-        />
-        
-        <HeroContent>
-          <Subtitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            🚀 App Launching Soon
-          </Subtitle>
-          <Title
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Connecting Hospitality Staff & Businesses
-          </Title>
-          <Description
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Whether you&apos;re looking for short-term staff or flexible hospitality work, HospoHub connects you instantly.
-          </Description>
-          <SignUpButton
-            onClick={() => setIsModalOpen(true)}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Join Waitlist <FiArrowRight />
-          </SignUpButton>
-          <Features
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            {[
-              'Instant Gig Booking',
-              'Verified Staff',
-              'Flexible Hours'
-            ].map((feature, index) => (
-              <Feature
-                key={feature}
+    <Layout 
+      isModalOpen={isModalOpen} 
+      onModalClose={() => setIsModalOpen(false)}
+      onModalOpen={() => setIsModalOpen(true)}
+    >
+      <PageContainer>
+        <HeroSection>
+          <AnimatedCircle
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.1 }}
+            transition={{ duration: 1 }}
+            style={{ top: '10%', left: '10%' }}
+          />
+          <AnimatedCircle
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            style={{ bottom: '10%', right: '10%' }}
+          />
+          
+          <HeroContent>
+            <Subtitle
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              🚀 App Launching Soon
+            </Subtitle>
+            <Title
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Streamline Your Hospitality Staffing
+            </Title>
+            <Description
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Whether you&apos;re looking for short-term staff or flexible hospitality work, HospoHub connects you instantly.
+            </Description>
+            <SignUpButton
+              onClick={handleJoinWaitlist}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Join Waitlist <FiArrowRight />
+            </SignUpButton>
+            <Features
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              {[
+                'Instant Gig Booking',
+                'Verified Staff',
+                'Flexible Hours'
+              ].map((feature, index) => (
+                <Feature
+                  key={feature}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                >
+                  <FiCheck /> {feature}
+                </Feature>
+              ))}
+            </Features>
+            <StatsSection>
+              <StatItem
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="number">2,500+</div>
+                <div className="label">Pre-registered Workers</div>
+              </StatItem>
+              <StatItem
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <div className="number">500+</div>
+                <div className="label">Partner Venues</div>
+              </StatItem>
+              <StatItem
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="number">15+</div>
+                <div className="label">Major Cities</div>
+              </StatItem>
+            </StatsSection>
+            <TrustBadges>
+              <motion.div 
+                className="badge"
                 initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
               >
-                <FiCheck /> {feature}
-              </Feature>
-            ))}
-          </Features>
-          <StatsSection>
-            <StatItem
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="number">2,500+</div>
-              <div className="label">Pre-registered Workers</div>
-            </StatItem>
-            <StatItem
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              <div className="number">500+</div>
-              <div className="label">Partner Venues</div>
-            </StatItem>
-            <StatItem
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="number">15+</div>
-              <div className="label">Major Cities</div>
-            </StatItem>
-          </StatsSection>
-          <TrustBadges>
-            <motion.div 
-              className="badge"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <FiShield /> Verified Staff
-            </motion.div>
-            <motion.div 
-              className="badge"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              <FiCheck /> Background Checked
-            </motion.div>
-            <motion.div 
-              className="badge"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <FiDollarSign /> Secure Payments
-            </motion.div>
-          </TrustBadges>
-          <InfoGrid style={{ marginTop: '4rem' }}>
-            <InsightCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h3>Industry Challenges</h3>
-              <div className="stat">47%</div>
-              <div className="description">of hospitality businesses report staffing as their biggest challenge</div>
-              <ul>
-                <li><FiCheck /> High staff turnover rates increasing costs</li>
-                <li><FiCheck /> Difficulty finding qualified last-minute staff</li>
-                <li><FiCheck /> Time-consuming recruitment processes</li>
-                <li><FiCheck /> Seasonal staffing fluctuations</li>
-              </ul>
-            </InsightCard>
+                <FiShield /> Verified Staff
+              </motion.div>
+              <motion.div 
+                className="badge"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <FiCheck /> Background Checked
+              </motion.div>
+              <motion.div 
+                className="badge"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <FiDollarSign /> Secure Payments
+              </motion.div>
+            </TrustBadges>
+            <InfoGrid style={{ marginTop: '4rem' }}>
+              <InsightCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h3>Industry Challenges</h3>
+                <div className="stat">47%</div>
+                <div className="description">of hospitality businesses report staffing as their biggest challenge</div>
+                <ul>
+                  <li><FiCheck /> High staff turnover rates increasing costs</li>
+                  <li><FiCheck /> Difficulty finding qualified last-minute staff</li>
+                  <li><FiCheck /> Time-consuming recruitment processes</li>
+                  <li><FiCheck /> Seasonal staffing fluctuations</li>
+                </ul>
+              </InsightCard>
 
-            <InsightCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <h3>The HospoHub Solution</h3>
-              <div className="stat">24/7</div>
-              <div className="description">instant access to verified hospitality professionals</div>
-              <ul>
-                <li><FiCheck /> Smart matching algorithm for perfect fit</li>
-                <li><FiCheck /> Automated background checks and verification</li>
-                <li><FiCheck /> Real-time availability updates</li>
-                <li><FiCheck /> Integrated payment and rating system</li>
-              </ul>
-            </InsightCard>
-          </InfoGrid>
-        </HeroContent>
-      </HeroSection>
+              <InsightCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <h3>The HospoHub Solution</h3>
+                <div className="stat">24/7</div>
+                <div className="description">instant access to verified hospitality professionals</div>
+                <ul>
+                  <li><FiCheck /> Smart matching algorithm for perfect fit</li>
+                  <li><FiCheck /> Automated background checks and verification</li>
+                  <li><FiCheck /> Real-time availability updates</li>
+                  <li><FiCheck /> Integrated payment and rating system</li>
+                </ul>
+              </InsightCard>
+            </InfoGrid>
+          </HeroContent>
+        </HeroSection>
 
-      <SectionTransition
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <div className="line" />
-        <motion.div 
-          className="icon-container"
-          initial={{ scale: 0, rotate: -180 }}
-          whileInView={{ scale: 1, rotate: 0 }}
+        <SectionTransition
+          as={motion.div}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 200 }}
         >
-          <FiArrowRight />
-        </motion.div>
-      </SectionTransition>
-
-      <FloatingObject
-        as={motion.div}
-        size="80px"
-        shape="circle"
-        variant="teal"
-        initial={{ x: -100, y: 50, opacity: 0 }}
-        whileInView={{ x: 0, y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, type: "spring" }}
-        style={{ left: '20%' }}
-      />
-
-      <FloatingObject
-        as={motion.div}
-        size="120px"
-        shape="blob"
-        variant="blue"
-        initial={{ x: 100, y: -50, opacity: 0 }}
-        whileInView={{ x: 0, y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, type: "spring" }}
-        style={{ right: '20%' }}
-      />
-
-      <SectionWrapper id="launch-benefits" background="#fff">
-        <InfoSection>
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          <div className="line" />
+          <motion.div 
+            className="icon-container"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
             viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 200 }}
           >
-            <FiTarget /> Platform Features
-          </SectionTitle>
-          <InfoGrid>
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <IconWrapper>
-                <FiShield />
-              </IconWrapper>
-              <h3>Advanced Security</h3>
-              <ul>
-                <li><FiCheck /> Identity verification</li>
-                <li><FiCheck /> Secure payment processing</li>
-                <li><FiCheck /> Data encryption</li>
-                <li><FiCheck /> Privacy protection</li>
-              </ul>
-            </GlassCard>
+            <FiArrowRight />
+          </motion.div>
+        </SectionTransition>
 
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <IconWrapper>
-                <FiClock />
-              </IconWrapper>
-              <h3>Real-Time Matching</h3>
-              <ul>
-                <li><FiCheck /> Instant notifications</li>
-                <li><FiCheck /> Live availability updates</li>
-                <li><FiCheck /> Smart scheduling</li>
-                <li><FiCheck /> Quick response system</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
-              <IconWrapper>
-                <FiMessageCircle />
-              </IconWrapper>
-              <h3>Communication Tools</h3>
-              <ul>
-                <li><FiCheck /> In-app messaging</li>
-                <li><FiCheck /> Document sharing</li>
-                <li><FiCheck /> Team collaboration</li>
-                <li><FiCheck /> Feedback system</li>
-              </ul>
-            </GlassCard>
-          </InfoGrid>
-        </InfoSection>
-      </SectionWrapper>
-
-      <SectionWrapper id="business-benefits" background="rgba(0,0,0,0.02)">
-        <InfoSection background="rgba(0,0,0,0.02)">
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <FiTrendingUp /> Business Benefits
-          </SectionTitle>
-          <InfoGrid>
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
-                <FiDollarSign />
-              </IconWrapper>
-              <h3><FiDollarSign /> Cost Savings</h3>
-              <p>Reduce staffing costs significantly:</p>
-              <ul>
-                <li><FiCheck /> Save up to 30% on recruitment fees</li>
-                <li><FiCheck /> No long-term commitments</li>
-                <li><FiCheck /> Pay only for hours worked</li>
-                <li><FiCheck /> Eliminate overtime costs</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              >
-                <FiClock />
-              </IconWrapper>
-              <h3><FiClock /> Time & Efficiency</h3>
-              <p>Streamline your operations:</p>
-              <ul>
-                <li><FiCheck /> 80% faster staff sourcing</li>
-                <li><FiCheck /> Instant staff replacement</li>
-                <li><FiCheck /> Automated timesheet tracking</li>
-                <li><FiCheck /> Reduced administrative work</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
-              >
-                <FiAward />
-              </IconWrapper>
-              <h3><FiAward /> ROI Benefits</h3>
-              <p>Maximize your investment:</p>
-              <ul>
-                <li><FiCheck /> Higher staff retention rates</li>
-                <li><FiCheck /> Reduced training costs</li>
-                <li><FiCheck /> Better staff performance</li>
-                <li><FiCheck /> Increased customer satisfaction</li>
-              </ul>
-            </GlassCard>
-          </InfoGrid>
-        </InfoSection>
-        <WaveDivider 
-          background="rgba(0,0,0,0.02)" 
-          variant="blue"
-          fill="#fff"
+        <FloatingObject
           as={motion.div}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          size="80px"
+          shape="circle"
+          variant="teal"
+          initial={{ x: -100, y: 50, opacity: 0 }}
+          whileInView={{ x: 0, y: 0, opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 1, type: "spring" }}
+          style={{ left: '20%' }}
         />
-      </SectionWrapper>
 
-      <SectionWrapper id="how-it-works" background="#fff">
-        <GradientOverlay />
-        <InfoSection>
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <FiBookOpen /> How HospoHub Works
-          </SectionTitle>
-          <InfoGrid>
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
-                <FiTarget />
-              </IconWrapper>
-              <h3><FiTarget /> For Businesses</h3>
-              <p>Simple 3-step process:</p>
-              <ul>
-                <li><FiCheck /> Post your gig requirements</li>
-                <li><FiCheck /> Review matched candidates</li>
-                <li><FiCheck /> Confirm and pay securely</li>
-                <li><FiCheck /> Rate after completion</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              >
-                <FiMessageCircle />
-              </IconWrapper>
-              <h3><FiMessageCircle /> Platform Features</h3>
-              <p>Built for hospitality:</p>
-              <ul>
-                <li><FiCheck /> Real-time availability</li>
-                <li><FiCheck /> Smart matching system</li>
-                <li><FiCheck /> Secure messaging</li>
-                <li><FiCheck /> Digital contracts</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
-              >
-                <FiSmile />
-              </IconWrapper>
-              <h3><FiSmile /> For Workers</h3>
-              <p>Easy to get started:</p>
-              <ul>
-                <li><FiCheck /> Create your profile</li>
-                <li><FiCheck /> Set your availability</li>
-                <li><FiCheck /> Accept gigs instantly</li>
-                <li><FiCheck /> Get paid quickly</li>
-              </ul>
-            </GlassCard>
-          </InfoGrid>
-        </InfoSection>
-        <WaveDivider 
-          background="#fff" 
-          variant="blue"
-          fill="rgba(0,0,0,0.02)"
+        <FloatingObject
           as={motion.div}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        />
-      </SectionWrapper>
-
-      <SectionWrapper background="rgba(0,0,0,0.02)">
-        <InfoSection background="rgba(0,0,0,0.02)">
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <FiSmile /> For Workers
-          </SectionTitle>
-          <InfoGrid>
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
-                <FiSmile />
-              </IconWrapper>
-              <h3><FiSmile /> Flexible Work</h3>
-              <p>Work on your terms:</p>
-              <ul>
-                <li><FiCheck /> Choose your schedule</li>
-                <li><FiCheck /> Pick your venues</li>
-                <li><FiCheck /> Set availability</li>
-                <li><FiCheck /> Work when you want</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              >
-                <FiDollarSign />
-              </IconWrapper>
-              <h3><FiDollarSign /> Quick Payments</h3>
-              <p>Get paid reliably:</p>
-              <ul>
-                <li><FiCheck /> Secure transactions</li>
-                <li><FiCheck /> Fast payouts</li>
-                <li><FiCheck /> Clear rates</li>
-                <li><FiCheck /> Payment protection</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
-              >
-                <FiAward />
-              </IconWrapper>
-              <h3><FiAward /> Career Growth</h3>
-              <p>Build your profile:</p>
-              <ul>
-                <li><FiCheck /> Performance ratings</li>
-                <li><FiCheck /> Work history</li>
-                <li><FiCheck /> Skill validation</li>
-                <li><FiCheck /> References</li>
-              </ul>
-            </GlassCard>
-          </InfoGrid>
-        </InfoSection>
-        <WaveDivider 
-          background="rgba(0,0,0,0.02)" 
+          size="120px"
+          shape="blob"
           variant="blue"
-          fill="#fff"
-          as={motion.div}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ x: 100, y: -50, opacity: 0 }}
+          whileInView={{ x: 0, y: 0, opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 1, type: "spring" }}
+          style={{ right: '20%' }}
         />
-      </SectionWrapper>
 
-      <SectionWrapper background="#fff">
-        <InfoSection>
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <FiHeart /> Worker Benefits
-          </SectionTitle>
-          <InfoGrid>
-            <GlassCard
+        <SectionWrapper id="platform-features" background="#fff">
+          <InfoSection>
+            <SectionTitle
+              as={motion.h2}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
+              <FiTarget /> Platform Features
+            </SectionTitle>
+            <InfoGrid>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200 }}
               >
-                <FiDollarSign />
-              </IconWrapper>
-              <h3><FiDollarSign /> Earning Potential</h3>
-              <p>Maximize your income:</p>
-              <ul>
-                <li><FiCheck /> Competitive hourly rates</li>
-                <li><FiCheck /> Choose high-paying gigs</li>
-                <li><FiCheck /> Bonus opportunities</li>
-                <li><FiCheck /> Multiple venue options</li>
-              </ul>
-            </GlassCard>
+                <IconWrapper>
+                  <FiShield />
+                </IconWrapper>
+                <h3>Advanced Security</h3>
+                <ul>
+                  <li><FiCheck /> Identity verification</li>
+                  <li><FiCheck /> Secure payment processing</li>
+                  <li><FiCheck /> Data encryption</li>
+                  <li><FiCheck /> Privacy protection</li>
+                </ul>
+              </GlassCard>
 
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                transition={{ delay: 0.2 }}
               >
-                <FiSmile />
-              </IconWrapper>
-              <h3><FiSmile /> Work-Life Balance</h3>
-              <p>Control your schedule:</p>
-              <ul>
-                <li><FiCheck /> Work when you want</li>
-                <li><FiCheck /> No minimum hours</li>
-                <li><FiCheck /> Choose your locations</li>
-                <li><FiCheck /> Flexible availability</li>
-              </ul>
-            </GlassCard>
+                <IconWrapper>
+                  <FiClock />
+                </IconWrapper>
+                <h3>Real-Time Matching</h3>
+                <ul>
+                  <li><FiCheck /> Instant notifications</li>
+                  <li><FiCheck /> Live availability updates</li>
+                  <li><FiCheck /> Smart scheduling</li>
+                  <li><FiCheck /> Quick response system</li>
+                </ul>
+              </GlassCard>
 
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
+                transition={{ delay: 0.4 }}
               >
-                <FiAward />
-              </IconWrapper>
-              <h3><FiAward /> Career Development</h3>
-              <p>Grow professionally:</p>
-              <ul>
-                <li><FiCheck /> Diverse experience</li>
-                <li><FiCheck /> Skill development</li>
-                <li><FiCheck /> Network building</li>
-                <li><FiCheck /> Performance rewards</li>
-              </ul>
-            </GlassCard>
-          </InfoGrid>
-        </InfoSection>
-        <WaveDivider 
-          background="#fff" 
-          variant="blue"
-          fill="#f8f8f8"
-          as={motion.div}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        />
-      </SectionWrapper>
+                <IconWrapper>
+                  <FiMessageCircle />
+                </IconWrapper>
+                <h3>Communication Tools</h3>
+                <ul>
+                  <li><FiCheck /> In-app messaging</li>
+                  <li><FiCheck /> Document sharing</li>
+                  <li><FiCheck /> Team collaboration</li>
+                  <li><FiCheck /> Feedback system</li>
+                </ul>
+              </GlassCard>
+            </InfoGrid>
+          </InfoSection>
+        </SectionWrapper>
 
-      <SectionWrapper background="#fff">
-        <InfoSection>
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <FiTrendingUp /> Market Insights
-          </SectionTitle>
-          <InfoGrid>
-            <InsightCard
+        <SectionWrapper id="business-benefits" background="rgba(0,0,0,0.02)">
+          <InfoSection background="rgba(0,0,0,0.02)">
+            <SectionTitle
+              as={motion.h2}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h3>Industry Growth</h3>
-              <div className="stat">$84B</div>
-              <div className="description">projected market size for hospitality staffing by 2025</div>
-              <ul>
-                <li><FiCheck /> Rising demand for flexible staffing solutions</li>
-                <li><FiCheck /> Increasing adoption of digital platforms</li>
-                <li><FiCheck /> Growing gig economy in hospitality sector</li>
-                <li><FiCheck /> Shift towards on-demand workforce</li>
-              </ul>
-            </InsightCard>
-
-            <InsightCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <h3>Cost Analysis</h3>
-              <div className="stat">30%</div>
-              <div className="description">average reduction in staffing costs with on-demand solutions</div>
-              <ul>
-                <li><FiCheck /> Lower recruitment and advertising costs</li>
-                <li><FiCheck /> Reduced overtime expenses</li>
-                <li><FiCheck /> Minimized training investments</li>
-                <li><FiCheck /> Optimized labor cost management</li>
-              </ul>
-            </InsightCard>
-
-            <InsightCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
-              <h3>Future of Work</h3>
-              <div className="stat">68%</div>
-              <div className="description">of workers prefer flexible scheduling options</div>
-              <ul>
-                <li><FiCheck /> Increased work-life balance</li>
-                <li><FiCheck /> Greater earning potential</li>
-                <li><FiCheck /> Diverse experience opportunities</li>
-                <li><FiCheck /> Career growth flexibility</li>
-              </ul>
-            </InsightCard>
-          </InfoGrid>
-        </InfoSection>
-        <WaveDivider 
-          background="#fff" 
-          variant="blue"
-          fill="rgba(0,0,0,0.02)"
-          as={motion.div}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        />
-      </SectionWrapper>
-
-      <FAQSection id="faq">
-        <FAQContainer>
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <FiMessageCircle /> Frequently Asked Questions
-          </SectionTitle>
-          {faqs.map((faq, index) => (
-            <FAQItem
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <FAQQuestion
-                onClick={() => setActiveAccordion(activeAccordion === index ? null : index)}
-                aria-expanded={activeAccordion === index}
+              <FiTrendingUp /> Business Benefits
+            </SectionTitle>
+            <InfoGrid>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                {faq.question}
-                <FiChevronDown />
-              </FAQQuestion>
-              <AnimatePresence>
-                {activeAccordion === index && (
-                  <FAQAnswer
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {faq.answer}
-                  </FAQAnswer>
-                )}
-              </AnimatePresence>
-            </FAQItem>
-          ))}
-        </FAQContainer>
-      </FAQSection>
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
+                  <FiDollarSign />
+                </IconWrapper>
+                <h3><FiDollarSign /> Cost Savings</h3>
+                <p>Reduce staffing costs significantly:</p>
+                <ul>
+                  <li><FiCheck /> Save up to 30% on recruitment fees</li>
+                  <li><FiCheck /> No long-term commitments</li>
+                  <li><FiCheck /> Pay only for hours worked</li>
+                  <li><FiCheck /> Eliminate overtime costs</li>
+                </ul>
+              </GlassCard>
 
-      <Footer>
-        <FooterContent>
-          <FooterSection>
-            <Logo>HospoHub</Logo>
-            <p>The upcoming on-demand staffing app revolutionizing short-term hospitality work. Find staff or gigs instantly, whenever you need them.</p>
-            <SocialLinks>
-              <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                <FiGithub />
-              </SocialLink>
-              <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                <FiTwitter />
-              </SocialLink>
-              <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                <FiLinkedin />
-              </SocialLink>
-            </SocialLinks>
-          </FooterSection>
-          <FooterSection>
-            <h3>Product</h3>
-            <FooterLinks>
-              <FooterLink href="#">Features</FooterLink>
-              <FooterLink href="#">Pricing</FooterLink>
-              <FooterLink href="#">FAQ</FooterLink>
-            </FooterLinks>
-          </FooterSection>
-          <FooterSection>
-            <h3>Company</h3>
-            <FooterLinks>
-              <FooterLink href="#">About</FooterLink>
-              <FooterLink href="#">Contact</FooterLink>
-              <FooterLink href="#">Privacy</FooterLink>
-              <FooterLink href="#">Terms</FooterLink>
-            </FooterLinks>
-          </FooterSection>
-        </FooterContent>
-        <Copyright>
-          © {new Date().getFullYear()} HospoHub. All rights reserved.
-        </Copyright>
-      </Footer>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                >
+                  <FiClock />
+                </IconWrapper>
+                <h3><FiClock /> Time & Efficiency</h3>
+                <p>Streamline your operations:</p>
+                <ul>
+                  <li><FiCheck /> 80% faster staff sourcing</li>
+                  <li><FiCheck /> Instant staff replacement</li>
+                  <li><FiCheck /> Automated timesheet tracking</li>
+                  <li><FiCheck /> Reduced administrative work</li>
+                </ul>
+              </GlassCard>
 
-      <SignupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </PageContainer>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
+                >
+                  <FiAward />
+                </IconWrapper>
+                <h3><FiAward /> ROI Benefits</h3>
+                <p>Maximize your investment:</p>
+                <ul>
+                  <li><FiCheck /> Higher staff retention rates</li>
+                  <li><FiCheck /> Reduced training costs</li>
+                  <li><FiCheck /> Better staff performance</li>
+                  <li><FiCheck /> Increased customer satisfaction</li>
+                </ul>
+              </GlassCard>
+            </InfoGrid>
+          </InfoSection>
+          <WaveDivider 
+            background="rgba(0,0,0,0.02)" 
+            variant="blue"
+            fill="#fff"
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper id="how-it-works" background="#fff">
+          <GradientOverlay />
+          <InfoSection>
+            <SectionTitle
+              as={motion.h2}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiBookOpen /> How HospoHub Works
+            </SectionTitle>
+            <InfoGrid>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
+                  <FiTarget />
+                </IconWrapper>
+                <h3><FiTarget /> For Businesses</h3>
+                <p>Simple 3-step process:</p>
+                <ul>
+                  <li><FiCheck /> Post your gig requirements</li>
+                  <li><FiCheck /> Review matched candidates</li>
+                  <li><FiCheck /> Confirm and pay securely</li>
+                  <li><FiCheck /> Rate after completion</li>
+                </ul>
+              </GlassCard>
+
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                >
+                  <FiMessageCircle />
+                </IconWrapper>
+                <h3><FiMessageCircle /> Platform Features</h3>
+                <p>Built for hospitality:</p>
+                <ul>
+                  <li><FiCheck /> Real-time availability</li>
+                  <li><FiCheck /> Smart matching system</li>
+                  <li><FiCheck /> Secure messaging</li>
+                  <li><FiCheck /> Digital contracts</li>
+                </ul>
+              </GlassCard>
+
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
+                >
+                  <FiSmile />
+                </IconWrapper>
+                <h3><FiSmile /> For Workers</h3>
+                <p>Easy to get started:</p>
+                <ul>
+                  <li><FiCheck /> Create your profile</li>
+                  <li><FiCheck /> Set your availability</li>
+                  <li><FiCheck /> Accept gigs instantly</li>
+                  <li><FiCheck /> Get paid quickly</li>
+                </ul>
+              </GlassCard>
+            </InfoGrid>
+          </InfoSection>
+          <WaveDivider 
+            background="#fff" 
+            variant="blue"
+            fill="rgba(0,0,0,0.02)"
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper background="rgba(0,0,0,0.02)">
+          <InfoSection background="rgba(0,0,0,0.02)">
+            <SectionTitle
+              as={motion.h2}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiSmile /> For Workers
+            </SectionTitle>
+            <InfoGrid>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
+                  <FiSmile />
+                </IconWrapper>
+                <h3><FiSmile /> Flexible Work</h3>
+                <p>Work on your terms:</p>
+                <ul>
+                  <li><FiCheck /> Choose your schedule</li>
+                  <li><FiCheck /> Pick your venues</li>
+                  <li><FiCheck /> Set availability</li>
+                  <li><FiCheck /> Work when you want</li>
+                </ul>
+              </GlassCard>
+
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                >
+                  <FiDollarSign />
+                </IconWrapper>
+                <h3><FiDollarSign /> Quick Payments</h3>
+                <p>Get paid reliably:</p>
+                <ul>
+                  <li><FiCheck /> Secure transactions</li>
+                  <li><FiCheck /> Fast payouts</li>
+                  <li><FiCheck /> Clear rates</li>
+                  <li><FiCheck /> Payment protection</li>
+                </ul>
+              </GlassCard>
+
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
+                >
+                  <FiAward />
+                </IconWrapper>
+                <h3><FiAward /> Career Growth</h3>
+                <p>Build your profile:</p>
+                <ul>
+                  <li><FiCheck /> Performance ratings</li>
+                  <li><FiCheck /> Work history</li>
+                  <li><FiCheck /> Skill validation</li>
+                  <li><FiCheck /> References</li>
+                </ul>
+              </GlassCard>
+            </InfoGrid>
+          </InfoSection>
+          <WaveDivider 
+            background="rgba(0,0,0,0.02)" 
+            variant="blue"
+            fill="#fff"
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper background="#fff">
+          <InfoSection>
+            <SectionTitle
+              as={motion.h2}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiHeart /> Worker Benefits
+            </SectionTitle>
+            <InfoGrid>
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                >
+                  <FiDollarSign />
+                </IconWrapper>
+                <h3><FiDollarSign /> Earning Potential</h3>
+                <p>Maximize your income:</p>
+                <ul>
+                  <li><FiCheck /> Competitive hourly rates</li>
+                  <li><FiCheck /> Choose high-paying gigs</li>
+                  <li><FiCheck /> Bonus opportunities</li>
+                  <li><FiCheck /> Multiple venue options</li>
+                </ul>
+              </GlassCard>
+
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                >
+                  <FiSmile />
+                </IconWrapper>
+                <h3><FiSmile /> Work-Life Balance</h3>
+                <p>Control your schedule:</p>
+                <ul>
+                  <li><FiCheck /> Work when you want</li>
+                  <li><FiCheck /> No minimum hours</li>
+                  <li><FiCheck /> Choose your locations</li>
+                  <li><FiCheck /> Flexible availability</li>
+                </ul>
+              </GlassCard>
+
+              <GlassCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <IconWrapper
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
+                >
+                  <FiAward />
+                </IconWrapper>
+                <h3><FiAward /> Career Development</h3>
+                <p>Grow professionally:</p>
+                <ul>
+                  <li><FiCheck /> Diverse experience</li>
+                  <li><FiCheck /> Skill development</li>
+                  <li><FiCheck /> Network building</li>
+                  <li><FiCheck /> Performance rewards</li>
+                </ul>
+              </GlassCard>
+            </InfoGrid>
+          </InfoSection>
+          <WaveDivider 
+            background="#fff" 
+            variant="blue"
+            fill="#f8f8f8"
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper background="#fff">
+          <InfoSection>
+            <SectionTitle
+              as={motion.h2}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiTrendingUp /> Market Insights
+            </SectionTitle>
+            <InfoGrid>
+              <InsightCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h3>Industry Growth</h3>
+                <div className="stat">$84B</div>
+                <div className="description">projected market size for hospitality staffing by 2025</div>
+                <ul>
+                  <li><FiCheck /> Rising demand for flexible staffing solutions</li>
+                  <li><FiCheck /> Increasing adoption of digital platforms</li>
+                  <li><FiCheck /> Growing gig economy in hospitality sector</li>
+                  <li><FiCheck /> Shift towards on-demand workforce</li>
+                </ul>
+              </InsightCard>
+
+              <InsightCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <h3>Cost Analysis</h3>
+                <div className="stat">30%</div>
+                <div className="description">average reduction in staffing costs with on-demand solutions</div>
+                <ul>
+                  <li><FiCheck /> Lower recruitment and advertising costs</li>
+                  <li><FiCheck /> Reduced overtime expenses</li>
+                  <li><FiCheck /> Minimized training investments</li>
+                  <li><FiCheck /> Optimized labor cost management</li>
+                </ul>
+              </InsightCard>
+
+              <InsightCard
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+              >
+                <h3>Future of Work</h3>
+                <div className="stat">68%</div>
+                <div className="description">of workers prefer flexible scheduling options</div>
+                <ul>
+                  <li><FiCheck /> Increased work-life balance</li>
+                  <li><FiCheck /> Greater earning potential</li>
+                  <li><FiCheck /> Diverse experience opportunities</li>
+                  <li><FiCheck /> Career growth flexibility</li>
+                </ul>
+              </InsightCard>
+            </InfoGrid>
+          </InfoSection>
+          <WaveDivider 
+            background="#fff" 
+            variant="blue"
+            fill="rgba(0,0,0,0.02)"
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper background="#fff">
+          <PricingSection>
+            <SectionTitle
+              as={motion.h2}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiDollarSign /> Simple Pricing
+            </SectionTitle>
+            <PricingContainer>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <PricingCard>
+                  <h3>For Workers</h3>
+                  <div className="price">
+                    Free
+                    <span className="period"> forever</span>
+                  </div>
+                  <div className="description">
+                    Find flexible hospitality work that fits your schedule
+                  </div>
+                  <ul>
+                    <li><FiCheck /> Create professional profile</li>
+                    <li><FiCheck /> Access to all job listings</li>
+                    <li><FiCheck /> Real-time notifications</li>
+                    <li><FiCheck /> Secure payments</li>
+                    <li><FiCheck /> Build work history</li>
+                    <li><FiCheck /> Rate and review venues</li>
+                  </ul>
+                  <PricingButton onClick={handleJoinWaitlist}>
+                    Join Now
+                  </PricingButton>
+                </PricingCard>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <PricingCard $featured>
+                  <h3>For Businesses</h3>
+                  <div className="price">
+                    <span className="currency">SEK</span> 2,000
+                    <span className="period">/month</span>
+                  </div>
+                  <div className="description">
+                    Access qualified staff when you need them most
+                  </div>
+                  <ul>
+                    <li><FiCheck /> Unlimited job postings</li>
+                    <li><FiCheck /> Verified worker profiles</li>
+                    <li><FiCheck /> Smart matching algorithm</li>
+                    <li><FiCheck /> Real-time availability</li>
+                    <li><FiCheck /> Secure payment handling</li>
+                    <li><FiCheck /> Analytics and reporting</li>
+                  </ul>
+                  <PricingButton $featured onClick={handleJoinWaitlist}>
+                    Get Started
+                  </PricingButton>
+                </PricingCard>
+              </motion.div>
+            </PricingContainer>
+          </PricingSection>
+          <WaveDivider 
+            background="#fff" 
+            variant="blue"
+            fill="#f8f8f8"
+            as={motion.div}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          />
+        </SectionWrapper>
+
+        <FAQSection id="faq">
+          <FAQContainer>
+            <SectionTitle
+              as={motion.h2}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiMessageCircle /> Frequently Asked Questions
+            </SectionTitle>
+            {faqs.map((faq, index) => (
+              <FAQItem
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <FAQQuestion
+                  onClick={() => setActiveAccordion(activeAccordion === index ? null : index)}
+                  aria-expanded={activeAccordion === index}
+                >
+                  {faq.question}
+                  <FiChevronDown />
+                </FAQQuestion>
+                <AnimatePresence>
+                  {activeAccordion === index && (
+                    <FAQAnswer
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {faq.answer}
+                    </FAQAnswer>
+                  )}
+                </AnimatePresence>
+              </FAQItem>
+            ))}
+          </FAQContainer>
+        </FAQSection>
+      </PageContainer>
+    </Layout>
   );
 };
 
