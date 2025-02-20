@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiChevronDown, FiCheck, FiArrowRight, FiGithub, FiTwitter, FiLinkedin, 
-  FiMenu, FiX, FiClock, FiCalendar, FiDollarSign, FiStar, FiUsers, 
-  FiShield, FiTrendingUp, FiAward, FiMessageCircle, FiPieChart,
-  FiSettings, FiSmile, FiHeart, FiBookOpen, FiTarget, FiZap
+  FiMenu, FiX, FiClock, FiDollarSign, FiStar, 
+  FiShield, FiTrendingUp, FiAward, FiMessageCircle,
+  FiSmile, FiHeart, FiBookOpen, FiTarget, FiZap
 } from 'react-icons/fi';
 import SignupModal from '../components/SignupModal';
 
@@ -91,7 +91,7 @@ const HeroSection = styled.section`
   align-items: center;
   justify-content: center;
   padding: 6rem 2rem 2rem;
-  background: #fff;
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -102,6 +102,7 @@ const AnimatedCircle = styled(motion.div)`
   width: 40vw;
   height: 40vw;
   border-radius: 50%;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.05) 100%);
   border: 1px solid rgba(0, 0, 0, 0.1);
   pointer-events: none;
 `;
@@ -117,16 +118,19 @@ const Title = styled(motion.h1)`
   font-size: clamp(2.5rem, 5vw, 4rem);
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  color: #000;
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 const Subtitle = styled(motion.div)`
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   font-size: 1rem;
-  color: #666;
+  color: #000000;
   margin-bottom: 2rem;
 `;
 
@@ -138,7 +142,7 @@ const Description = styled(motion.p)`
 `;
 
 const SignUpButton = styled(motion.button)`
-  background: #000;
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
   color: #fff;
   padding: 1rem 3rem;
   border-radius: 8px;
@@ -146,22 +150,16 @@ const SignUpButton = styled(motion.button)`
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin: 0 auto;
-
-  svg {
-    transition: transform 0.2s ease;
-  }
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 
   &:hover {
     transform: scale(1.05);
-    
-    svg {
-      transform: translateX(5px);
-    }
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -177,14 +175,15 @@ const Feature = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #333;
+  color: #000000;
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 
   svg {
-    color: #000;
+    color: #333333;
   }
 `;
 
@@ -242,14 +241,24 @@ const InfoGrid = styled.div`
 const IconWrapper = styled(motion.div)`
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #000;
+  color: #000000;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled(motion.h2)`
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 3rem;
-  color: #000;
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,35 +266,38 @@ const SectionTitle = styled(motion.h2)`
 
   svg {
     font-size: 2rem;
+    color: #000000;
   }
 `;
 
 const GlassCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 24px;
   padding: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.9);
   }
 
   h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: #000;
+    color: #000000;
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
   p {
-    color: #333;
+    color: #333333;
     line-height: 1.6;
     margin-bottom: 1.5rem;
   }
@@ -300,29 +312,22 @@ const GlassCard = styled(motion.div)`
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
-    color: #333;
+    color: #333333;
 
     svg {
-      color: #000;
+      color: #000000;
     }
   }
 `;
 
 const FAQSection = styled.section`
   padding: 4rem 2rem;
-  background: #f8f8f8;
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
 `;
 
 const FAQContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
-`;
-
-const FAQTitle = styled(motion.h2)`
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 3rem;
-  color: #000;
 `;
 
 const FAQItem = styled.div`
@@ -333,10 +338,10 @@ const FAQQuestion = styled.button`
   width: 100%;
   text-align: left;
   padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #eee;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  color: #000;
+  color: #000000;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
@@ -344,13 +349,17 @@ const FAQQuestion = styled.button`
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 
   svg {
+    color: #333333;
     transition: transform 0.3s ease;
   }
 
   &:hover {
-    background: #f0f0f0;
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }
 
   &[aria-expanded="true"] svg {
@@ -360,13 +369,14 @@ const FAQQuestion = styled.button`
 
 const FAQAnswer = styled(motion.div)`
   padding: 1.5rem;
-  color: #333;
+  color: #333333;
   line-height: 1.6;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
   margin-top: 2px;
   border-radius: 0 0 8px 8px;
-  border: 1px solid #eee;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-top: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 `;
 
 const Footer = styled.footer`
@@ -433,6 +443,104 @@ const Copyright = styled.div`
   margin-top: 4rem;
   padding-top: 2rem;
   border-top: 1px solid #eee;
+`;
+
+const StatsSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 4rem auto;
+  text-align: center;
+`;
+
+const StatItem = styled(motion.div)`
+  .number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  
+  .label {
+    color: #4c4f6d;
+    font-size: 1.1rem;
+  }
+`;
+
+const TrustBadges = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4c4f6d;
+    font-weight: 500;
+    
+    svg {
+      color: #6366f1;
+      font-size: 1.5rem;
+    }
+  }
+`;
+
+const InsightCard = styled(motion.div)`
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.06) 100%);
+  border-radius: 24px;
+  padding: 2.5rem;
+  text-align: left;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 0.5rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    color: #333333;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: #333333;
+    font-size: 1.1rem;
+
+    svg {
+      color: #000000;
+      flex-shrink: 0;
+    }
+  }
 `;
 
 const LandingPage = () => {
@@ -564,6 +672,96 @@ const LandingPage = () => {
               </Feature>
             ))}
           </Features>
+          <StatsSection>
+            <StatItem
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="number">2,500+</div>
+              <div className="label">Pre-registered Workers</div>
+            </StatItem>
+            <StatItem
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="number">500+</div>
+              <div className="label">Partner Venues</div>
+            </StatItem>
+            <StatItem
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="number">15+</div>
+              <div className="label">Major Cities</div>
+            </StatItem>
+          </StatsSection>
+          <TrustBadges>
+            <motion.div 
+              className="badge"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <FiShield /> Verified Staff
+            </motion.div>
+            <motion.div 
+              className="badge"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <FiCheck /> Background Checked
+            </motion.div>
+            <motion.div 
+              className="badge"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <FiDollarSign /> Secure Payments
+            </motion.div>
+          </TrustBadges>
+          <InfoGrid style={{ marginTop: '4rem' }}>
+            <InsightCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h3>Industry Challenges</h3>
+              <div className="stat">47%</div>
+              <div className="description">of hospitality businesses report staffing as their biggest challenge</div>
+              <ul>
+                <li><FiCheck /> High staff turnover rates increasing costs</li>
+                <li><FiCheck /> Difficulty finding qualified last-minute staff</li>
+                <li><FiCheck /> Time-consuming recruitment processes</li>
+                <li><FiCheck /> Seasonal staffing fluctuations</li>
+              </ul>
+            </InsightCard>
+
+            <InsightCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <h3>The HospoHub Solution</h3>
+              <div className="stat">24/7</div>
+              <div className="description">instant access to verified hospitality professionals</div>
+              <ul>
+                <li><FiCheck /> Smart matching algorithm for perfect fit</li>
+                <li><FiCheck /> Automated background checks and verification</li>
+                <li><FiCheck /> Real-time availability updates</li>
+                <li><FiCheck /> Integrated payment and rating system</li>
+              </ul>
+            </InsightCard>
+          </InfoGrid>
         </HeroContent>
       </HeroSection>
 
@@ -574,96 +772,63 @@ const LandingPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <FiUsers /> For Businesses
+            <FiTarget /> Launch Benefits
           </SectionTitle>
           <InfoGrid>
             <GlassCard
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
+              <IconWrapper>
+                <FiStar />
+              </IconWrapper>
+              <h3>Early Access Perks</h3>
+              <ul>
+                <li><FiCheck /> Priority matching</li>
+                <li><FiCheck /> Reduced platform fees</li>
+                <li><FiCheck /> Premium features free</li>
+                <li><FiCheck /> Exclusive events access</li>
+              </ul>
+            </GlassCard>
+
+            <GlassCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <IconWrapper>
+                <FiAward />
+              </IconWrapper>
+              <h3>Founding Member Status</h3>
+              <ul>
+                <li><FiCheck /> Verified badge</li>
+                <li><FiCheck /> Featured profiles</li>
+                <li><FiCheck /> Direct support line</li>
+                <li><FiCheck /> Community influence</li>
+              </ul>
+            </GlassCard>
+
+            <GlassCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <IconWrapper>
                 <FiZap />
               </IconWrapper>
-              <h3><FiClock /> Quick Staffing</h3>
-              <p>Find qualified staff instantly for:</p>
+              <h3>Limited Time Offer</h3>
               <ul>
-                <li><FiCheck /> Events and functions</li>
-                <li><FiCheck /> Peak season coverage</li>
-                <li><FiCheck /> Last-minute replacements</li>
-                <li><FiCheck /> Temporary staff needs</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-              >
-                <FiShield />
-              </IconWrapper>
-              <h3><FiStar /> Quality Assurance</h3>
-              <p>Hire with confidence:</p>
-              <ul>
-                <li><FiCheck /> Verified profiles</li>
-                <li><FiCheck /> Background checks</li>
-                <li><FiCheck /> Experience validation</li>
-                <li><FiCheck /> Rating system</li>
-              </ul>
-            </GlassCard>
-
-            <GlassCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <IconWrapper
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.4 }}
-              >
-                <FiSettings />
-              </IconWrapper>
-              <h3><FiPieChart /> Easy Management</h3>
-              <p>Streamlined hiring process:</p>
-              <ul>
-                <li><FiCheck /> Quick posting</li>
-                <li><FiCheck /> Instant matching</li>
-                <li><FiCheck /> Secure payments</li>
-                <li><FiCheck /> Performance tracking</li>
+                <li><FiCheck /> 50% off first month</li>
+                <li><FiCheck /> Free trial extension</li>
+                <li><FiCheck /> Referral rewards</li>
+                <li><FiCheck /> Launch party invite</li>
               </ul>
             </GlassCard>
           </InfoGrid>
         </InfoSection>
-        <WaveDivider 
-          background="#fff" 
-          fill="rgba(0,0,0,0.02)"
-          as={motion.div}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        />
       </SectionWrapper>
 
       <SectionWrapper background="rgba(0,0,0,0.02)">
@@ -1056,6 +1221,77 @@ const LandingPage = () => {
         <WaveDivider 
           background="#fff" 
           fill="#f8f8f8"
+          as={motion.div}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        />
+      </SectionWrapper>
+
+      <SectionWrapper background="#fff">
+        <InfoSection>
+          <SectionTitle
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <FiTrendingUp /> Market Insights
+          </SectionTitle>
+          <InfoGrid>
+            <InsightCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h3>Industry Growth</h3>
+              <div className="stat">$84B</div>
+              <div className="description">projected market size for hospitality staffing by 2025</div>
+              <ul>
+                <li><FiCheck /> Rising demand for flexible staffing solutions</li>
+                <li><FiCheck /> Increasing adoption of digital platforms</li>
+                <li><FiCheck /> Growing gig economy in hospitality sector</li>
+                <li><FiCheck /> Shift towards on-demand workforce</li>
+              </ul>
+            </InsightCard>
+
+            <InsightCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <h3>Cost Analysis</h3>
+              <div className="stat">30%</div>
+              <div className="description">average reduction in staffing costs with on-demand solutions</div>
+              <ul>
+                <li><FiCheck /> Lower recruitment and advertising costs</li>
+                <li><FiCheck /> Reduced overtime expenses</li>
+                <li><FiCheck /> Minimized training investments</li>
+                <li><FiCheck /> Optimized labor cost management</li>
+              </ul>
+            </InsightCard>
+
+            <InsightCard
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <h3>Future of Work</h3>
+              <div className="stat">68%</div>
+              <div className="description">of workers prefer flexible scheduling options</div>
+              <ul>
+                <li><FiCheck /> Increased work-life balance</li>
+                <li><FiCheck /> Greater earning potential</li>
+                <li><FiCheck /> Diverse experience opportunities</li>
+                <li><FiCheck /> Career growth flexibility</li>
+              </ul>
+            </InsightCard>
+          </InfoGrid>
+        </InfoSection>
+        <WaveDivider 
+          background="#fff" 
+          fill="rgba(0,0,0,0.02)"
           as={motion.div}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
