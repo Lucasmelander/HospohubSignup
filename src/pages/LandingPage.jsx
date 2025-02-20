@@ -22,10 +22,16 @@ const Navbar = styled(motion.nav)`
   left: 0;
   right: 0;
   padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   z-index: 100;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const NavContent = styled.div`
@@ -37,8 +43,17 @@ const NavContent = styled.div`
 `;
 
 const Logo = styled.div`
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1.5rem;
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const NavLinks = styled.div`
@@ -56,10 +71,23 @@ const NavLinks = styled.div`
       top: 100%;
       left: 0;
       right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 1rem;
-      gap: 1rem;
-      border-bottom: 1px solid #eee;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 1.5rem;
+      gap: 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      animation: slideDown 0.3s ease-out forwards;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 `;
@@ -67,11 +95,28 @@ const NavLinks = styled.div`
 const NavLink = styled.a`
   color: #000;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width 0.3s ease;
+  }
 
   &:hover {
-    color: #666;
+    color: #000;
+    
+    &::after {
+      width: 100%;
+    }
   }
 `;
 
@@ -79,9 +124,18 @@ const MenuButton = styled.button`
   display: none;
   font-size: 1.5rem;
   color: #000;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
   
   @media (max-width: 768px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
   }
 `;
 
@@ -241,15 +295,15 @@ const InfoGrid = styled.div`
 const IconWrapper = styled(motion.div)`
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #000000;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
   width: 64px;
   height: 64px;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const SectionTitle = styled(motion.h2)`
@@ -271,33 +325,33 @@ const SectionTitle = styled(motion.h2)`
 `;
 
 const GlassCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 24px;
   padding: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border-color: rgba(0, 0, 0, 0.2);
-    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.85);
   }
 
   h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: #000000;
+    color: #ffffff;
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
   p {
-    color: #333333;
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
     margin-bottom: 1.5rem;
   }
@@ -312,10 +366,10 @@ const GlassCard = styled(motion.div)`
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
-    color: #333333;
+    color: rgba(255, 255, 255, 0.9);
 
     svg {
-      color: #000000;
+      color: #ffffff;
     }
   }
 `;
@@ -547,6 +601,7 @@ const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -557,6 +612,15 @@ const LandingPage = () => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const faqs = [
@@ -589,6 +653,7 @@ const LandingPage = () => {
   return (
     <PageContainer>
       <Navbar
+        className={isScrolled ? 'scrolled' : ''}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
