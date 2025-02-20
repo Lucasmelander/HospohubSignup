@@ -1,4 +1,4 @@
-import { createClient } from '@vercel/edge-config';
+import { get, set } from '@vercel/edge-config';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,18 +17,16 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString(),
       id: Date.now().toString()
     };
-
-    const edgeConfig = createClient(process.env.EDGE_CONFIG);
     
     // Get existing signups
     const key = type === 'worker' ? 'workerSignups' : 'businessSignups';
-    const existingSignups = await edgeConfig.get(key) || [];
+    const existingSignups = await get(key) || [];
     
     // Add new signup
     const updatedSignups = [...existingSignups, signup];
     
     // Update Edge Config
-    await edgeConfig.set(key, updatedSignups);
+    await set(key, updatedSignups);
 
     return res.status(201).json({ 
       message: 'Signup successful', 

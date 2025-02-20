@@ -1,4 +1,4 @@
-import { createClient } from '@vercel/edge-config';
+import { get, set } from '@vercel/edge-config';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,17 +18,15 @@ export default async function handler(req, res) {
       status: 'new',
       timestamp: new Date().toISOString()
     };
-
-    const edgeConfig = createClient(process.env.EDGE_CONFIG);
     
     // Get existing submissions
-    const existingSubmissions = await edgeConfig.get('contactSubmissions') || [];
+    const existingSubmissions = await get('contactSubmissions') || [];
     
     // Add new submission
     const updatedSubmissions = [...existingSubmissions, submission];
     
     // Update Edge Config
-    await edgeConfig.set('contactSubmissions', updatedSubmissions);
+    await set('contactSubmissions', updatedSubmissions);
     
     return res.status(201).json({ 
       message: 'Form submitted successfully', 
