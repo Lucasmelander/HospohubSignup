@@ -123,7 +123,8 @@ const AdminLoginPage = () => {
       localStorage.setItem('adminToken', data.token);
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err.message);
+      console.error('Login error:', err);
+      setError(err.message || 'Failed to login. Please try again.');
       setPassword('');
     } finally {
       setIsLoading(false);

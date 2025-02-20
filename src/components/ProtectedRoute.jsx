@@ -28,21 +28,17 @@ const ProtectedRoute = ({ children }) => {
 
         setIsVerifying(false);
       } catch (error) {
+        console.error('Auth error:', error);
         localStorage.removeItem('adminToken');
         navigate('/admin/login');
       }
     };
 
     verifyToken();
-
-    // Check token validity every minute
-    const interval = setInterval(verifyToken, 60000);
-
-    return () => clearInterval(interval);
   }, [navigate]);
 
   if (isVerifying) {
-    return null; // or a loading spinner
+    return <div>Verifying authentication...</div>;
   }
 
   return children;
